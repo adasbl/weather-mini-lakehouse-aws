@@ -1,0 +1,28 @@
+# --- Virtual environments ---
+venv/
+.venv/
+ENV/
+
+# --- API keys and tokens ---
+.env
+.env.local
+secrets.json
+*.pem
+*.json_credentials
+
+# --- Python temporary files ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# --- Local editor files ---
+.vscode/
+.idea/
+.DS_Store
+
+# --- Local data and temporary files ---
+data/
+*.json
+*.parquet
+*.csv

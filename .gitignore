@@ -23,6 +23,5 @@ __pycache__/
 
 # --- Local data and temporary files ---
 data/
-*.json
 *.parquet
 *.csv

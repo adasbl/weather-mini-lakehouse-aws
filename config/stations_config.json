@@ -1,0 +1,27 @@
+{
+  "api": {
+    "base_url": "https://e6uw49pbah.execute-api.us-east-1.amazonaws.com/dev",
+    "default_limit": 100
+  },
+  "monitoring": {
+    "stations": ["GDN_01"],
+    "target_variables": [
+      "timestamp", "temperature", "humidity", "pressure", 
+      "wind_speed", "wind_direction", "rain_mm", "cloud_cover"
+    ]
+  },
+  "validation_rules": {
+    "temperature": {
+      "min": -50.0,
+      "max": 50.0
+    },
+    "humidity": {
+      "min": 0.0,
+      "max": 100.0
+    },
+    "pressure": {
+      "min": 900.0,
+      "max": 1100.0
+    }
+  }
+}

@@ -65,4 +65,4 @@ if __name__ == "__main__":
             weather_data = fetch_weather_data(station_id, default_limit)
             save_to_s3_bronze(weather_data, station_id)
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Error: {e}")    

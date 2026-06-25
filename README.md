@@ -144,6 +144,21 @@ to create Athena CTAS tables and materialize Gold-layer datasets in:
 s3://<bucket-name>/gold/
 ```
 
+### LOCAL EXECUTION (Gold layer generation from S3)
+
+In addition to the AWS-native workflow (Glue + Athena), the project supports a local execution mode for generating Gold-layer datasets directly from S3 using Python.
+
+```bash
+python src/analytics.py
+```
+
+The script generates a Gold-layer dataset:
+
+```text
+s3://<bucket-name>/gold/local_daily_weather_summary.parquet
+```
+
+
 ## Technologies
 
 - **Python 3.11+** – data pipeline implementation

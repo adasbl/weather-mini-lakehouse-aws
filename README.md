@@ -12,26 +12,13 @@ The objective of this project is to demonstrate a simple end-to-end data pipelin
 * Produces analytics-ready datasets
 * Follows basic data lakehouse principles
 
-## Architecture
+## Medallion Architecture
 
-```text
-Weather API
-     │
-     ▼
-Ingestion Layer
-     │
-     ▼
-Amazon S3 (Raw Data)
-     │
-     ▼
-Transformation Layer
-     │
-     ▼
-Curated Dataset
-     │
-     ▼
-Analytics Layer
-```
+| Layer | Purpose | Format |
+|---------|---------|---------|
+| Bronze | Raw weather observations | JSON |
+| Silver | Cleaned and validated datasets | Parquet |
+| Gold | Analytical aggregations and reporting datasets | Parquet / Athena Tables |
 
 ## Project Structure
 
@@ -42,12 +29,15 @@ weather-mini-lakehouse-aws/
 ├── docs/
 ├── notebooks/
 ├── sql/
+│   ├── analytical_queries.sql
+│   └── create_gold_tables.sql
 ├── src/
 │   ├── ingestion.py
 │   ├── transformation.py
 │   └── analytics.py
 ├── .env.example
 ├── .gitignore
+├── LICENSE
 ├── README.md
 └── requirements.txt
 ```
@@ -114,15 +104,15 @@ AWS_SESSION_TOKEN=
 
 ## Running the Pipeline
 
-### 1. Data Ingestion
+### 1. Bronze Layer - Data Ingestion
 
-Fetch weather data from the API and store it in Amazon S3.
+Fetch weather data from the external API and store raw JSON files in Amazon S3.
 
 ```bash
 python src/ingestion.py
 ```
 
-### 2. Data Transformation
+### 2. Silver Layer - Data Transformation
 
 Clean and transform raw weather data into an analytics-ready format.
 
@@ -130,27 +120,36 @@ Clean and transform raw weather data into an analytics-ready format.
 python src/transformation.py
 ```
 
-### 3. Analytics
+### 3. Data Catalog Registration
 
-Run analytical queries and generate summary statistics.
+Use AWS Glue Crawlers to automatically discover schemas and register Silver datasets in the Glue Data Catalog.
 
-```bash
-python src/analytics.py
+### 4. Gold Layer - Analytical Aggregations
+
+Amazon Athena is used to generate analytical datasets from Silver-layer data.
+
+The Gold layer contains aggregates such as:
+- Daily weather summaries
+- Temperature statistics
+- Wind and precipitation metrics
+- Weather anomaly detection datasets
+
+Execute:
+
+```sql
+sql/create_gold_tables.sql
+```
+to create Athena CTAS tables and materialize Gold-layer datasets in: 
+```text
+s3://<bucket-name>/gold/
 ```
 
 ## Technologies
 
-* Python
-* Pandas
-* Requests
-* Boto3
-* Amazon S3
-
-## Future Improvements
-
-* Automated orchestration with Apache Airflow
-* Infrastructure as Code (Terraform)
-* Data quality validation
-* Incremental loading strategy
-* Data catalog and metadata management
-* Dashboarding with Amazon QuickSight or Power BI
+- **Python 3.11+** – data pipeline implementation
+- **Pandas** – data processing and transformation
+- **PyArrow** – Parquet file generation
+- **Boto3** – AWS SDK for Python
+- **Amazon S3** – cloud object storage (Bronze / Silver / Gold)
+- **AWS Glue Data Catalog** – metadata management and schema discovery
+- **Amazon Athena** – serverless SQL analytics engine

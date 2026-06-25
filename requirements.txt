@@ -3,3 +3,6 @@ boto3==1.34.100
 python-dotenv==1.0.1
 pandas
 pyarrow
+jupyter
+matplotlib
+seaborn

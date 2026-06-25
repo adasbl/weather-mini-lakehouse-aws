@@ -25,3 +25,7 @@ __pycache__/
 data/
 *.parquet
 *.csv
+
+# --- Jupyter Notebook checkpoints ---
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
